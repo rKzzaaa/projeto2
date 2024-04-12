@@ -123,26 +123,7 @@ ERROS carregar(Tarefa tarefas[], int *pos) {
 
   return OK;
 }
-ERROS exportar_texto(Tarefa tarefas[], int *pos) {
-  char nome_arquivo[100];
-  printf("Digite o nome do arquivo para exportar as tarefas: ");
-  fgets(nome_arquivo, 100, stdin);
-  nome_arquivo[strcspn(nome_arquivo, "\n")] =
-      '\0'; // Remover o '\n' do final da string
 
-  FILE *arquivo = fopen(nome_arquivo, "w");
-  if (arquivo == NULL) {
-    printf("Erro ao abrir o arquivo.\n");
-    return ABRIR;
-  }
-
-  for (int i = 0; i < *pos; i++) {
-    fprintf(arquivo, "%d;%s;%s\n", tarefas[i].prioridade, tarefas[i].descricao, tarefas[i].categoria);
-  }
-
-  fclose(arquivo);
-  return OK;
-}
 
 void clearBuffer() {
   int c;
