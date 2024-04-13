@@ -77,7 +77,6 @@ ERROS listar(Tarefa tarefas[], int *pos) {
       printf("Prioridade: %d\t", tarefas[i].prioridade);
       printf("Categoria: %s\t", tarefas[i].categoria);
       printf("Descricao: %s\n", tarefas[i].descricao);
-      return OK;
     } 
     
     else {
@@ -124,6 +123,7 @@ ERROS carregar(Tarefa tarefas[], int *pos) {
 
   return OK;
 }
+
 
 void clearBuffer() {
   int c;
