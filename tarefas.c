@@ -72,13 +72,14 @@ ERROS listar(Tarefa tarefas[], int *pos) {
       printf("Categoria: %s\t", tarefas[i].categoria);
       printf("Descricao: %s\n", tarefas[i].descricao);
       return OK;
-    } else if (*teste == '\0'){
+    } else if (*teste == '\0') {
       printf("Pos: %d\t", i + 1);
       printf("Prioridade: %d\t", tarefas[i].prioridade);
       printf("Categoria: %s\t", tarefas[i].categoria);
       printf("Descricao: %s\n", tarefas[i].descricao);
-    } 
-    
+
+    }
+
     else {
       printf("Nenhuma tarefa encontrada foi encontada nessa categoria \n");
       return OK;
@@ -120,13 +121,63 @@ ERROS carregar(Tarefa tarefas[], int *pos) {
 
   if (fclose(f))
     return FECHAR;
-
+  
   return OK;
 }
+  ERROS exportar_texto(Tarefa tarefas[], int *pos) {
+    char nome_arquivo[100];
+    printf("Digite o nome do arquivo para exportar as tarefas: \n");
+    clearBuffer();
+    fgets(nome_arquivo, sizeof(nome_arquivo), stdin);
+    nome_arquivo[strcspn(nome_arquivo, "\n")] = '\0'; // Remover o '\n' do final da string
+    char *nome = strcat(nome_arquivo, ".txt");
+    FILE *arquivo = fopen(nome, "w");
+    if (arquivo == NULL) {
+      printf("Erro ao abrir o arquivo.\n");
+      return ABRIR;
+    }
+
+    for (int i = 0; i < *pos; i++) {
+      fprintf(arquivo, "%d;\n%s;\n%s;\n", tarefas[i].prioridade, tarefas[i].descricao,
+              tarefas[i].categoria);
+    }
+
+    fclose(arquivo);
+
+    FILE *f = fopen(nome_arquivo, "r");
+    if (f == NULL)
+      return ABRIR;
+
+    char categoria[TAM_CATEGORIA];
+    printf("Entre com a categoria: ");
+    clearBuffer();
+    fgets(categoria, TAM_CATEGORIA, stdin);
+    categoria[strcspn(categoria, "\n")] = '\0';
+
+    int encontrada = 0; // Variável para controlar se pelo menos uma tarefa foi encontrada
+
+    for (int i = 0; i < *pos; i++) {
+      if (strcmp(tarefas[i].categoria, categoria) == 0) {
+        printf("Pos: %d\t", i + 1);
+        printf("Prioridade: %d\t", tarefas[i].prioridade);
+        printf("Categoria: %s\t", tarefas[i].categoria);
+        printf("Descricao: %s\n", tarefas[i].descricao);
+        encontrada = 1; // Indica que pelo menos uma tarefa foi encontrada
+      }
+    }
+
+    if (!encontrada) {
+      printf("Nenhuma tarefa encontrada nessa categoria.\n");
+    }
+
+    fclose(f);
+
+    return OK;
+  }
+
 
 
 void clearBuffer() {
   int c;
-  while ((c = getchar()) != '\n' && c != EOF)
-    ;
+  while ((c = getchar()) != '\n' && c != EOF);
 }
