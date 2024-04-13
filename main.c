@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main() {
-  funcao fs[] = {criar, deletar, listar, salvar, carregar};
+  funcao fs[] = {criar, deletar, listar, salvar, carregar, exportar_texto};
 
   Tarefa tarefas[TOTAL];
   int pos;
@@ -53,9 +53,11 @@ int main() {
         break;
       }
     } else
-      printf("Sair...\n");
+      printf("Salvando no arquivo...\n");
 
   } while (opcao >= 0);
 
   fs[3](tarefas, &pos);
+  fs[5](tarefas, &pos);
+  printf("Saindo...\n");
 }
